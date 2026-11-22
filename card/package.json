@@ -1,6 +1,6 @@
 {
   "name": "phimaii",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "PhiMaii's neofetch-style terminal card. Run: npx phimaii",
   "bin": {
     "phimaii": "index.js"
@@ -23,6 +23,6 @@
     "directory": "card"
   },
   "engines": {
-    "node": ">=14"
+    "node": ">=18"
   }
 }

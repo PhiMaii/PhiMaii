@@ -50,10 +50,79 @@ const funFacts = [
   'wakes PCs over LAN in 1 click',
 ];
 
-const since = new Date('2022-09-26');
-const now = new Date();
-let years = now.getFullYear() - since.getFullYear();
-if (now < new Date(now.getFullYear(), since.getMonth(), since.getDate())) years -= 1;
+// ---------------------------------------------------------------- live data
+
+const GITHUB_USER = 'PhiMaii';
+const offline = args.includes('--offline');
+
+function yearsSince(date) {
+  const now = new Date();
+  let y = now.getFullYear() - date.getFullYear();
+  if (now < new Date(now.getFullYear(), date.getMonth(), date.getDate())) y -= 1;
+  return y;
+}
+
+function timeAgo(date) {
+  const s = Math.max(0, (Date.now() - date.getTime()) / 1000);
+  const units = [['y', 31536000], ['mo', 2592000], ['d', 86400], ['h', 3600], ['m', 60]];
+  for (const [u, n] of units) if (s >= n) return `${Math.floor(s / n)}${u} ago`;
+  return 'just now';
+}
+
+// Current time in Zürich, plus a greeting that fits the time of day
+function zurichNow() {
+  const parts = new Intl.DateTimeFormat('en-GB', {
+    timeZone: 'Europe/Zurich', hour: '2-digit', minute: '2-digit', hour12: false,
+  }).formatToParts(new Date());
+  const hh = parts.find((p) => p.type === 'hour').value;
+  const mm = parts.find((p) => p.type === 'minute').value;
+  const h = Number(hh) % 24;
+  const mood =
+    h < 5 ? 'night owl mode' :
+    h < 12 ? 'good morning' :
+    h < 18 ? 'good afternoon' :
+    h < 22 ? 'good evening' : 'good night';
+  return `${String(h).padStart(2, '0')}:${mm} · ${mood}`;
+}
+
+// Fetch public GitHub stats. Resolves to null when offline, slow or rate-limited.
+async function fetchGitHub(timeoutMs = 1500) {
+  if (offline || typeof fetch !== 'function') return null;
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), timeoutMs);
+  const get = (path) =>
+    fetch(`https://api.github.com${path}`, {
+      signal: ctrl.signal,
+      headers: { Accept: 'application/vnd.github+json', 'User-Agent': 'npx-phimaii-card' },
+    }).then((r) => (r.ok ? r.json() : Promise.reject(new Error(String(r.status)))));
+  try {
+    const [user, repos] = await Promise.all([
+      get(`/users/${GITHUB_USER}`),
+      get(`/users/${GITHUB_USER}/repos?per_page=100&sort=pushed`),
+    ]);
+    const own = repos.filter((r) => !r.fork);
+    // skip the profile repo itself, it changes all the time
+    const latest = own.find((r) => r.name.toLowerCase() !== GITHUB_USER.toLowerCase());
+    return {
+      repos: user.public_repos,
+      stars: own.reduce((n, r) => n + r.stargazers_count, 0),
+      since: new Date(user.created_at),
+      lastPush: latest ? { name: latest.name, at: new Date(latest.pushed_at) } : null,
+    };
+  } catch {
+    return null;
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+const fallbackSince = new Date('2022-09-26');
+const fit = (text, max = 31) => ([...text].length > max ? [...text].slice(0, max - 1).join('') + '…' : text);
+
+const uptimeText = (gh) =>
+  gh ? `${yearsSince(gh.since)}+ yrs · ${gh.repos} repos · ${gh.stars} ★` : `${yearsSince(fallbackSince)}+ years on GitHub`;
+const lastPushText = (gh) =>
+  gh && gh.lastPush ? fit(`${timeAgo(gh.lastPush.at)} · ${gh.lastPush.name}`) : 'probably soldering right now';
 
 // Each info line is a list of segments, so it can be typed out character by character.
 const seg = (text, color, opts = {}) => ({ text, color, ...opts });
@@ -73,9 +142,8 @@ const info = [
   [seg(user, palette.lilac, { bold: true }), seg('@', palette.fg), seg(host, palette.pink, { bold: true })],
   [seg('-'.repeat(user.length + 1 + host.length), palette.dim)],
   field('OS', 'Student @ ETH Zürich'),
-  field('Location', 'Zürich, Switzerland'),
-  field('Shell', 'zsh'),
-  field('Editor', 'VS Code'),
+  field('Location', `Zürich · ${zurichNow()}`),
+  field('Setup', 'zsh · VS Code'),
   field('Platforms', 'macOS · Linux · Windows'),
   field('Langs', 'C · C++ · C# · TS · Python', palette.lilac),
   field('Hardware', 'ESP32 · STM32 · KiCad', palette.lilac),
@@ -85,13 +153,24 @@ const info = [
   field('Hosting', 'Cloudflare · Vercel · Nginx', palette.lilac),
   field('Notes', 'Obsidian · Markdown · LaTeX', palette.lilac),
   field('Building', 'FluxNode, a BLDC motor driver', palette.pink),
-  field('Uptime', `${years}+ years on GitHub`, palette.pink),
+  field('Uptime', uptimeText(null), palette.pink),
+  field('Last push', lastPushText(null), palette.pink),
   field('GitHub', 'github.com/PhiMaii', palette.pink),
   field('Fun fact', funFacts[Math.floor(Math.random() * funFacts.length)], palette.yellow),
   [],
   swatches.map((c) => seg('   ', null, { bg: c })),
   swatches.map((c) => seg('   ', null, { bg: lighten(c) })),
 ];
+
+// Swap in live GitHub values once they arrive (works mid-animation too)
+const UPTIME_ROW = info.findIndex((l) => l[0] && l[0].text.trim() === 'Uptime');
+const PUSH_ROW = info.findIndex((l) => l[0] && l[0].text.trim() === 'Last push');
+function applyGitHub(gh) {
+  if (!gh) return;
+  info[UPTIME_ROW][1] = seg(uptimeText(gh), palette.fg);
+  info[PUSH_ROW][1] = seg(lastPushText(gh), palette.green);
+}
+const github = fetchGitHub();
 
 // ---------------------------------------------------------------- rendering
 
@@ -112,7 +191,7 @@ function renderInfo(line, chars = Infinity) {
 }
 
 const artWidth = Math.max(...art.map((l) => [...l].length));
-const infoWidth = Math.max(...info.map(lineLength));
+const infoWidth = Math.max(10 + 31, ...info.map(lineLength));
 const indent = ' ';
 const gap = '  ';
 const columns = out.columns || Number(process.env.COLUMNS) || 80;
@@ -180,9 +259,17 @@ const canAnimate =
   out.isTTY && useColor && sideBySide && !wantsStatic && (out.rows || 0) >= height + 3;
 
 if (!canAnimate) {
-  console.log(frame().join('\n'));
-  process.exit(0);
+  github.then((gh) => {
+    applyGitHub(gh);
+    console.log(frame().join('\n'));
+    process.exit(0);
+  });
+} else {
+  github.then(applyGitHub);
+  animate();
 }
+
+function animate() {
 
 const SCAN_MS = 650; // portrait builds up top to bottom
 const TYPE_START = 120; // info lines start typing, one after another
@@ -245,3 +332,4 @@ const tick = () => {
 };
 tick();
 timer = setInterval(tick, 1000 / FPS);
+}
