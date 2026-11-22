@@ -46,45 +46,15 @@
 <!-- ═══════════════════════════  PROJECTS  ═══════════════════════════ -->
 ## 🚀 Things I've built
 
-<table>
-  <tr>
-    <td width="50%" valign="top">
-      <h3>🎛️ <a href="https://github.com/PhiMaii/volumepad">VolumePad</a></h3>
-      A physical volume controller with haptics &amp; LEDs, built end to end on an ESP32-S3:
-      <a href="https://github.com/PhiMaii/volumepad-electronics">PCB</a> ·
-      <a href="https://github.com/PhiMaii/volumepad-firmware">firmware</a> ·
-      <a href="https://github.com/PhiMaii/volumepad-link">desktop link</a> ·
-      <a href="https://github.com/PhiMaii/volumepad-streamdeck-plugin">Stream Deck plugin</a>
-      <br/><br/>
-      <img src="https://img.shields.io/badge/C++-f7768e?style=flat-square&logo=cplusplus&logoColor=white" />
-      <img src="https://img.shields.io/badge/C%23-bb9af7?style=flat-square&logo=dotnet&logoColor=white" />
-      <img src="https://img.shields.io/badge/TypeScript-7aa2f7?style=flat-square&logo=typescript&logoColor=white" />
-    </td>
-    <td width="50%" valign="top">
-      <h3>⚙️ <a href="https://github.com/PhiMaii/fluxnode-foc-driver">fluxnode</a></h3>
-      A compact BLDC motor controller for field-oriented control: STM32G4, three-phase power stage, current sensing &amp; CAN-FD. Making motors spin smoothly, one Clarke/Park transform at a time.
-      <br/><br/>
-      <img src="https://img.shields.io/badge/C-7aa2f7?style=flat-square&logo=c&logoColor=white" />
-      <img src="https://img.shields.io/badge/STM32-9ece6a?style=flat-square&logo=stmicroelectronics&logoColor=white" />
-    </td>
-  </tr>
-  <tr>
-    <td width="50%" valign="top">
-      <h3>💌 <a href="https://github.com/PhiMaii/time-2-love">time-2-love</a></h3>
-      A small WiFi-connected countdown device built with an ESP8266, plus a React Native companion app.
-      <br/><br/>
-      <img src="https://img.shields.io/badge/ESP8266-e0af68?style=flat-square&logo=espressif&logoColor=white" />
-      <img src="https://img.shields.io/badge/TypeScript-7aa2f7?style=flat-square&logo=typescript&logoColor=white" />
-    </td>
-    <td width="50%" valign="top">
-      <h3>✍️ <a href="https://github.com/PhiMaii/digit-classifier-app">digit-classifier</a></h3>
-      Draw a digit, let the neural network guess. A little tkinter app for playing with handwritten digit recognition.
-      <br/><br/>
-      <img src="https://img.shields.io/badge/Python-9ece6a?style=flat-square&logo=python&logoColor=white" />
-      <img src="https://img.shields.io/badge/Jupyter-e0af68?style=flat-square&logo=jupyter&logoColor=white" />
-    </td>
-  </tr>
-</table>
+<p align="center">
+  <a href="https://github.com/PhiMaii/volumepad"><img src="https://phimaii.github.io/PhiMaii/projects/volumepad.svg" alt="VolumePad: A haptic volume knob with an LED ring, built end to end: custom PCB, firmware, Windows companion app and a Stream Deck plugin." width="49%" /></a>
+  <a href="https://github.com/PhiMaii/fluxnode-foc-driver"><img src="https://phimaii.github.io/PhiMaii/projects/fluxnode.svg" alt="FluxNode: A compact BLDC motor controller for field-oriented control: STM32G4, three-phase power stage, current sensing &amp; CAN-FD. Making motors spin smoothly, one Clarke/Park transform at a time." width="49%" /></a>
+</p>
+
+<p align="center">
+  <a href="https://github.com/PhiMaii/time-2-love"><img src="https://phimaii.github.io/PhiMaii/projects/time-2-love.svg" alt="time-2-love: A small WiFi-connected countdown device built with an ESP8266 and an OLED display, plus a React Native companion app." width="49%" /></a>
+  <a href="https://github.com/PhiMaii/digit-classifier-app"><img src="https://phimaii.github.io/PhiMaii/projects/digit-classifier.svg" alt="digit-classifier: Draw a digit, let the neural network guess. A little tkinter app for playing with handwritten digit and letter recognition." width="49%" /></a>
+</p>
 
 <details>
 <summary><b>🎮 …and a bunch more Stream Deck plugins & side quests</b></summary>

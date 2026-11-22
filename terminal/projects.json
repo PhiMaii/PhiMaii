@@ -1,0 +1,40 @@
+[
+  {
+    "id": "volumepad",
+    "icon": "🎛️",
+    "title": "VolumePad",
+    "repo": "volumepad",
+    "accent": "lilac",
+    "description": "A haptic volume knob with an LED ring, built end to end: custom PCB, firmware, Windows companion app and a Stream Deck plugin.",
+    "parts": ["PCB", "firmware", "desktop app", "Stream Deck plugin"],
+    "tech": [["C++", "pink"], ["C#", "lilac"], ["TypeScript", "blue"], ["KiCad", "green"]]
+  },
+  {
+    "id": "fluxnode",
+    "icon": "⚙️",
+    "title": "FluxNode",
+    "repo": "fluxnode-foc-driver",
+    "accent": "pink",
+    "description": "A compact BLDC motor controller for field-oriented control: STM32G4, three-phase power stage, current sensing & CAN-FD. Making motors spin smoothly, one Clarke/Park transform at a time.",
+    "tech": [["C", "blue"], ["STM32", "green"], ["KiCad", "lilac"]]
+  },
+  {
+    "id": "time-2-love",
+    "icon": "💌",
+    "title": "time-2-love",
+    "repo": "time-2-love",
+    "accent": "pink",
+    "description": "A small WiFi-connected countdown device built with an ESP8266 and an OLED display, plus a React Native companion app.",
+    "parts": ["PCB", "case", "firmware", "app"],
+    "tech": [["ESP8266", "yellow"], ["C++", "pink"], ["TypeScript", "blue"]]
+  },
+  {
+    "id": "digit-classifier",
+    "icon": "✍️",
+    "title": "digit-classifier",
+    "repo": "digit-classifier-app",
+    "accent": "blue",
+    "description": "Draw a digit, let the neural network guess. A little tkinter app for playing with handwritten digit and letter recognition.",
+    "tech": [["Python", "green"], ["TensorFlow", "orange"], ["Jupyter", "yellow"]]
+  }
+]

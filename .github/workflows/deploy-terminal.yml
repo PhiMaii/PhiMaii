@@ -4,6 +4,7 @@ name: 🌐 Deploy web terminal
 #   https://phimaii.github.io/PhiMaii/                       demo page
 #   https://phimaii.github.io/PhiMaii/phimaii-terminal.js    script to embed
 #   https://phimaii.github.io/PhiMaii/card.svg               animated SVG for the profile README
+#   https://phimaii.github.io/PhiMaii/projects/<id>.svg      project cards for the profile README
 # Runs daily too, so the GitHub stats baked into card.svg stay fresh.
 
 on:
@@ -53,6 +54,7 @@ jobs:
           mkdir -p _site
           cp terminal/index.html terminal/phimaii-terminal.js _site/
           node terminal/render-svg.js _site/card.svg
+          node terminal/render-projects.js _site/projects
           touch _site/.nojekyll
 
       - uses: actions/configure-pages@v5
