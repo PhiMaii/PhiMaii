@@ -36,9 +36,32 @@ const phimai = {
 ## 🛠️ Tech I play with
 
 <p align="center">
-  <img src="https://skillicons.dev/icons?i=c,cpp,cs,ts,js,py,java&theme=dark" /><br/>
-  <img src="https://skillicons.dev/icons?i=arduino,raspberrypi,nodejs,react,git,github,vscode,linux&theme=dark" />
+  <img src="https://skillicons.dev/icons?i=c,cpp,cs,py,ts,react,nextjs,arduino,raspberrypi,docker,linux,git,githubactions,vscode&perline=7&theme=dark" alt="core stack" />
 </p>
+
+<details>
+<summary><b>🧰 Full toolbox</b></summary>
+<br/>
+
+**💻 Languages**<br/>
+<img src="https://skillicons.dev/icons?i=c,cpp,cs,py,js,ts,swift&theme=dark" height="40" />
+
+**🌐 Web**<br/>
+<img src="https://skillicons.dev/icons?i=html,css,tailwind,react,nextjs,nodejs&theme=dark" height="40" />
+
+**🔌 Embedded**<br/>
+<img src="https://skillicons.dev/icons?i=arduino,raspberrypi&theme=dark" height="40" />
+
+**🧠 ML & Data**<br/>
+<img src="https://skillicons.dev/icons?i=tensorflow,anaconda&theme=dark" height="40" />
+
+**☁️ DevOps & Hosting**<br/>
+<img src="https://skillicons.dev/icons?i=docker,githubactions,nginx,cloudflare,vercel&theme=dark" height="40" />
+
+**🧰 Tools & OS**<br/>
+<img src="https://skillicons.dev/icons?i=git,github,vscode,bash,powershell,linux,windows,apple,md,latex,obsidian&theme=dark" height="40" />
+
+</details>
 
 <br/>
 
@@ -106,14 +129,6 @@ const phimai = {
 <p align="center">
   <img height="165" src="https://github-readme-stats.vercel.app/api?username=PhiMaii&show_icons=true&theme=tokyonight&hide_border=true&bg_color=1a1b27&title_color=bb9af7&icon_color=7aa2f7&include_all_commits=true&count_private=true&rank_icon=github" />
   <img height="165" src="https://github-readme-stats.vercel.app/api/top-langs/?username=PhiMaii&layout=compact&theme=tokyonight&hide_border=true&bg_color=1a1b27&title_color=bb9af7&langs_count=8" />
-</p>
-
-<p align="center">
-  <img src="https://streak-stats.demolab.com?user=PhiMaii&theme=tokyonight&hide_border=true&background=1A1B27&ring=BB9AF7&fire=F7768E&currStreakLabel=7AA2F7" />
-</p>
-
-<p align="center">
-  <img src="https://github-readme-activity-graph.vercel.app/graph?username=PhiMaii&bg_color=1a1b27&color=7aa2f7&line=bb9af7&point=f7768e&area=true&area_color=bb9af7&hide_border=true&custom_title=Contribution%20Graph" width="100%" />
 </p>
 
 <br/>
