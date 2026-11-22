@@ -51,6 +51,9 @@ const phimai = {
 
 **🔌 Embedded**<br/>
 <img src="https://skillicons.dev/icons?i=arduino,raspberrypi&theme=dark" height="40" />
+<img src="https://img.shields.io/badge/ESP32-1a1b27?style=for-the-badge&logo=espressif&logoColor=f7768e" height="40" />
+<img src="https://img.shields.io/badge/STM32-1a1b27?style=for-the-badge&logo=stmicroelectronics&logoColor=7aa2f7" height="40" />
+<img src="https://img.shields.io/badge/KiCad-1a1b27?style=for-the-badge&logo=kicad&logoColor=bb9af7" height="40" />
 
 **🧠 ML & Data**<br/>
 <img src="https://skillicons.dev/icons?i=tensorflow,anaconda&theme=dark" height="40" />
