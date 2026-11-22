@@ -33,14 +33,14 @@ function gradientAt(t) {
   return stops[i].map((c, k) => Math.round(c + (stops[i + 1][k] - c) * f));
 }
 
-// Kept short (max 33 chars) so the card fits an 80-column terminal side by side
+// Kept short (max 31 chars) so the card fits an 80-column terminal side by side
 const funFacts = [
   'built a volume knob, PCB to app',
-  'Stream Deck plugin for everything',
-  'wrote a Minecraft TNT logger mod',
-  'built a WiFi countdown on ESP8266',
+  'Stream Deck plugins for all',
+  'wrote a Minecraft TNT logger',
+  'WiFi countdown on an ESP8266',
   'spins motors with Clarke & Park',
-  'wakes PCs over LAN with one click',
+  'wakes PCs over LAN in 1 click',
 ];
 
 const since = new Date('2022-09-26');
@@ -69,9 +69,14 @@ const info = [
   field('Location', 'Zürich, Switzerland'),
   field('Shell', 'zsh'),
   field('Editor', 'VS Code'),
+  field('Platforms', 'macOS · Linux · Windows'),
   field('Langs', 'C · C++ · C# · TS · Python', palette.lilac),
   field('Hardware', 'ESP32 · STM32 · KiCad', palette.lilac),
   field('Web', 'React · Next.js · Tailwind', palette.lilac),
+  field('ML', 'TensorFlow · Anaconda', palette.lilac),
+  field('DevOps', 'Docker · GitHub Actions', palette.lilac),
+  field('Hosting', 'Cloudflare · Vercel · Nginx', palette.lilac),
+  field('Notes', 'Obsidian · Markdown · LaTeX', palette.lilac),
   field('Building', 'FluxNode, a BLDC motor driver', palette.pink),
   field('Uptime', `${years}+ years on GitHub`, palette.pink),
   field('GitHub', 'github.com/PhiMaii', palette.pink),
@@ -85,7 +90,7 @@ const visibleLength = (s) => [...s.replace(/\x1b\[[0-9;]*m/g, '')].length;
 const artWidth = Math.max(...art.map((l) => [...l].length));
 const infoWidth = Math.max(...info.map(visibleLength));
 const indent = ' ';
-const gap = '   ';
+const gap = '  ';
 const columns = process.stdout.columns || Number(process.env.COLUMNS) || 80;
 const colorRow = (i) => gradientAt(i / Math.max(1, art.length - 1));
 
