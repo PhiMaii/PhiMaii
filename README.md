@@ -10,10 +10,12 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/📍-Zürich-7aa2f7?style=flat-square&labelColor=1a1b27" />
-  <img src="https://img.shields.io/badge/🎓-ETH%20Zürich-bb9af7?style=flat-square&labelColor=1a1b27" />
+  <img src="https://img.shields.io/badge/📍-Zürich-7aa2f7?style=flat-square&labelColor=1a1b27" />&nbsp;&nbsp;&nbsp;
+  <img src="https://img.shields.io/badge/🎓-ETH%20Zürich-bb9af7?style=flat-square&labelColor=1a1b27" />&nbsp;&nbsp;&nbsp;
   <img src="https://komarev.com/ghpvc/?username=PhiMaii&style=flat-square&color=f7768e&label=👀%20visitors" />
 </p>
+
+<br/>
 
 <!-- ═══════════════════════════  TERMINAL  ═══════════════════════════ -->
 <p align="center">
