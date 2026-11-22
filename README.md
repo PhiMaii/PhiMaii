@@ -12,7 +12,7 @@
 <p align="center">
   <img src="https://img.shields.io/badge/📍-Zürich-7aa2f7?style=flat-square&labelColor=1a1b27" />&nbsp;&nbsp;&nbsp;
   <img src="https://img.shields.io/badge/🎓-ETH%20Zürich-bb9af7?style=flat-square&labelColor=1a1b27" />&nbsp;&nbsp;&nbsp;
-  <img src="https://komarev.com/ghpvc/?username=PhiMaii&style=flat-square&color=f7768e&label=👀%20visitors" />
+  <img src="https://img.shields.io/badge/dynamic/xml?url=https%3A%2F%2Fkomarev.com%2Fghpvc%2F%3Fusername%3DPhiMaii%26label%3Dvisitors&amp;query=%28%2F%2F%2A%5Blocal-name%28%29%3D%27text%27%5D%29%5Blast%28%29%5D&amp;label=%F0%9F%91%80&amp;labelColor=1a1b27&amp;color=f7768e&amp;style=flat-square&amp;suffix=%20visitors" alt="visitors" />
 </p>
 
 <br/>
