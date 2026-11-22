@@ -17,6 +17,13 @@
 
 <br/>
 
+<!-- ═══════════════════════════  SNAKE  ═══════════════════════════ -->
+<p align="center">
+  <img src="https://raw.githubusercontent.com/PhiMaii/PhiMaii/output/github-snake-dark.svg" alt="snake eating my contributions" />
+</p>
+
+<br/>
+
 <!-- ═══════════════════════════  ABOUT  ═══════════════════════════ -->
 ## 🧑‍💻 About me
 
@@ -132,15 +139,6 @@ const phimai = {
 <p align="center">
   <img height="165" src="https://github-readme-stats.vercel.app/api?username=PhiMaii&show_icons=true&theme=tokyonight&hide_border=true&bg_color=1a1b27&title_color=bb9af7&icon_color=7aa2f7&include_all_commits=true&count_private=true&rank_icon=github" />
   <img height="165" src="https://github-readme-stats.vercel.app/api/top-langs/?username=PhiMaii&layout=compact&theme=tokyonight&hide_border=true&bg_color=1a1b27&title_color=bb9af7&langs_count=8" />
-</p>
-
-<br/>
-
-<!-- ═══════════════════════════  SNAKE  ═══════════════════════════ -->
-## 🐍 Watch the snake eat my commits
-
-<p align="center">
-  <img src="https://raw.githubusercontent.com/PhiMaii/PhiMaii/output/github-snake-dark.svg" alt="snake eating my contributions" />
 </p>
 
 <!-- ═══════════════════════════  FOOTER  ═══════════════════════════ -->
