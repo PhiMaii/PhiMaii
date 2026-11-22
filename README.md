@@ -39,6 +39,27 @@ const phimai = {
 
 <br/>
 
+<!-- ═══════════════════════════  TERMINAL  ═══════════════════════════ -->
+## ☕ Say hi from the terminal
+
+<p align="center">
+  <a href="https://phimaii.github.io/PhiMaii/">
+    <img src="https://phimaii.github.io/PhiMaii/card.svg" alt="A terminal running npx phimaii and showing my card" width="100%" />
+  </a>
+</p>
+
+<p align="center">
+  <sub>
+    Try it yourself: <code>npx phimaii</code> ·
+    zero dependencies ·
+    <a href="https://github.com/PhiMaii/PhiMaii/tree/main/card">source</a> ·
+    <a href="https://www.npmjs.com/package/phimaii">signed on npm</a> ·
+    <a href="https://phimaii.github.io/PhiMaii/">play it in your browser</a>
+  </sub>
+</p>
+
+<br/>
+
 <!-- ═══════════════════════════  TECH STACK  ═══════════════════════════ -->
 ## 🛠️ Tech I play with
 

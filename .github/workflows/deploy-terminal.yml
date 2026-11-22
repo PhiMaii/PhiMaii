@@ -3,6 +3,8 @@ name: 🌐 Deploy web terminal
 # Publishes terminal/ to GitHub Pages:
 #   https://phimaii.github.io/PhiMaii/                       demo page
 #   https://phimaii.github.io/PhiMaii/phimaii-terminal.js    script to embed
+#   https://phimaii.github.io/PhiMaii/card.svg               animated SVG for the profile README
+# Runs daily too, so the GitHub stats baked into card.svg stay fresh.
 
 on:
   push:
@@ -11,6 +13,8 @@ on:
       - "terminal/**"
       - "card/art.js"
       - ".github/workflows/deploy-terminal.yml"
+  schedule:
+    - cron: "17 4 * * *" # daily, ~05:17 in Zürich
   workflow_dispatch:
 
 permissions:
@@ -43,9 +47,12 @@ jobs:
         run: node --check terminal/phimaii-terminal.js
 
       - name: Build site folder
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
         run: |
           mkdir -p _site
           cp terminal/index.html terminal/phimaii-terminal.js _site/
+          node terminal/render-svg.js _site/card.svg
           touch _site/.nojekyll
 
       - uses: actions/configure-pages@v5
