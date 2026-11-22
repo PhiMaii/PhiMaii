@@ -5,7 +5,7 @@
 
 <p align="center">
   <a href="https://github.com/PhiMaii">
-    <img src="https://readme-typing-svg.demolab.com?font=JetBrains+Mono&weight=600&size=22&duration=2800&pause=900&color=BB9AF7&center=true&vCenter=true&width=560&lines=I+build+things+that+blink+%F0%9F%92%A1;Firmware+%E2%86%94+PCBs+%E2%86%94+Apps;Stream+Deck+plugin+enthusiast+%F0%9F%8E%9B%EF%B8%8F;Currently+spinning+motors+with+FOC+%E2%9A%99%EF%B8%8F" alt="typing" />
+    <img src="https://readme-typing-svg.demolab.com?font=JetBrains+Mono&weight=600&size=22&duration=2800&pause=900&color=BB9AF7&center=true&vCenter=true&width=640&lines=Hardware+%C3%97+software+from+Z%C3%BCrich+%F0%9F%87%A8%F0%9F%87%AD;Small+annoyances.+New+side+projects;PCB+%E2%86%92+firmware+%E2%86%92+app+%F0%9F%94%81;Making+everyday+things+a+little+smarter;Side+projects+tend+to+become+full+projects;npx+phimaii+to+say+hi+%F0%9F%91%8B" alt="typing" />
   </a>
 </p>
 
