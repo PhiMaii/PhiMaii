@@ -42,7 +42,8 @@ phimaii-terminal { max-width: 900px; margin: 2rem auto; }
 cd terminal && python3 -m http.server 8000
 ```
 
-Then open http://localhost:8000 and scroll down.
+Then open http://localhost:8000. The demo page has the terminal at the top, so it starts right away;
+embedded further down a page, it waits until it's scrolled into view.
 
 ## Notes
 
