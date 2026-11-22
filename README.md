@@ -15,33 +15,7 @@
   <img src="https://komarev.com/ghpvc/?username=PhiMaii&style=flat-square&color=f7768e&label=👀%20visitors" />
 </p>
 
-<br/>
-
-<!-- ═══════════════════════════  SNAKE  ═══════════════════════════ -->
-<p align="center">
-  <img src="https://raw.githubusercontent.com/PhiMaii/PhiMaii/output/github-snake-dark.svg" alt="snake eating my contributions" />
-</p>
-
-<br/>
-
-<!-- ═══════════════════════════  ABOUT  ═══════════════════════════ -->
-## 🧑‍💻 About me
-
-```ts
-const phimai = {
-  location: "Zürich 🇨🇭",
-  studying: "ETH Zürich 🎓",
-  loves:    ["embedded", "PCBs", "Stream Deck", "ML"],
-  building: "FluxNode, a BLDC motor driver ⚙️",
-  funFact:  "VolumePad: PCB → firmware → app 🎛️",
-};
-```
-
-<br/>
-
 <!-- ═══════════════════════════  TERMINAL  ═══════════════════════════ -->
-## ☕ Say hi from the terminal
-
 <p align="center">
   <a href="https://phimaii.github.io/PhiMaii/">
     <img src="https://phimaii.github.io/PhiMaii/card.svg" alt="A terminal running npx phimaii and showing my card" width="100%" />
@@ -60,39 +34,10 @@ const phimai = {
 
 <br/>
 
-<!-- ═══════════════════════════  TECH STACK  ═══════════════════════════ -->
-## 🛠️ Tech I play with
-
+<!-- ═══════════════════════════  SNAKE  ═══════════════════════════ -->
 <p align="center">
-  <img src="https://skillicons.dev/icons?i=c,cpp,cs,py,ts,react,nextjs,arduino,raspberrypi,docker,linux,git,githubactions,vscode&perline=7&theme=dark" alt="core stack" />
+  <img src="https://raw.githubusercontent.com/PhiMaii/PhiMaii/output/github-snake-dark.svg" alt="snake eating my contributions" />
 </p>
-
-<details>
-<summary><b>🧰 Full toolbox</b></summary>
-<br/>
-
-**💻 Languages**<br/>
-<img src="https://skillicons.dev/icons?i=c,cpp,cs,py,js,ts,swift&theme=dark" height="40" />
-
-**🌐 Web**<br/>
-<img src="https://skillicons.dev/icons?i=html,css,tailwind,react,nextjs,nodejs&theme=dark" height="40" />
-
-**🔌 Embedded**<br/>
-<img src="https://skillicons.dev/icons?i=arduino,raspberrypi&theme=dark" height="40" />
-<img src="https://img.shields.io/badge/ESP32-1a1b27?style=for-the-badge&logo=espressif&logoColor=f7768e" height="40" />
-<img src="https://img.shields.io/badge/STM32-1a1b27?style=for-the-badge&logo=stmicroelectronics&logoColor=7aa2f7" height="40" />
-<img src="https://img.shields.io/badge/KiCad-1a1b27?style=for-the-badge&logo=kicad&logoColor=bb9af7" height="40" />
-
-**🧠 ML & Data**<br/>
-<img src="https://skillicons.dev/icons?i=tensorflow,anaconda&theme=dark" height="40" />
-
-**☁️ DevOps & Hosting**<br/>
-<img src="https://skillicons.dev/icons?i=docker,githubactions,nginx,cloudflare,vercel&theme=dark" height="40" />
-
-**🧰 Tools & OS**<br/>
-<img src="https://skillicons.dev/icons?i=git,github,vscode,bash,powershell,linux,windows,apple,md,latex,obsidian&theme=dark" height="40" />
-
-</details>
 
 <br/>
 
@@ -149,6 +94,42 @@ const phimai = {
 - 🔌 [WOL-Server](https://github.com/PhiMaii/WOL-Server): local Wake-on-LAN web server
 - 🧪 [molecular-simulation-DSA](https://github.com/PhiMaii/molecular-simulation-DSA): molecular simulation in Python
 - 💣 [mc-fabric-tnt-logger](https://github.com/PhiMaii/mc-fabric-1.21.3-tnt-logger): Fabric mod that logs TNT shenanigans
+
+</details>
+
+<br/>
+
+<!-- ═══════════════════════════  TECH STACK  ═══════════════════════════ -->
+## 🛠️ Tech I play with
+
+<p align="center">
+  <img src="https://skillicons.dev/icons?i=c,cpp,cs,py,ts,react,nextjs,arduino,raspberrypi,docker,linux,git,githubactions,vscode&perline=7&theme=dark" alt="core stack" />
+</p>
+
+<details>
+<summary><b>🧰 Full toolbox</b></summary>
+<br/>
+
+**💻 Languages**<br/>
+<img src="https://skillicons.dev/icons?i=c,cpp,cs,py,js,ts,swift&theme=dark" height="40" />
+
+**🌐 Web**<br/>
+<img src="https://skillicons.dev/icons?i=html,css,tailwind,react,nextjs,nodejs&theme=dark" height="40" />
+
+**🔌 Embedded**<br/>
+<img src="https://skillicons.dev/icons?i=arduino,raspberrypi&theme=dark" height="40" />
+<img src="https://img.shields.io/badge/ESP32-1a1b27?style=for-the-badge&logo=espressif&logoColor=f7768e" height="40" />
+<img src="https://img.shields.io/badge/STM32-1a1b27?style=for-the-badge&logo=stmicroelectronics&logoColor=7aa2f7" height="40" />
+<img src="https://img.shields.io/badge/KiCad-1a1b27?style=for-the-badge&logo=kicad&logoColor=bb9af7" height="40" />
+
+**🧠 ML & Data**<br/>
+<img src="https://skillicons.dev/icons?i=tensorflow,anaconda&theme=dark" height="40" />
+
+**☁️ DevOps & Hosting**<br/>
+<img src="https://skillicons.dev/icons?i=docker,githubactions,nginx,cloudflare,vercel&theme=dark" height="40" />
+
+**🧰 Tools & OS**<br/>
+<img src="https://skillicons.dev/icons?i=git,github,vscode,bash,powershell,linux,windows,apple,md,latex,obsidian&theme=dark" height="40" />
 
 </details>
 
