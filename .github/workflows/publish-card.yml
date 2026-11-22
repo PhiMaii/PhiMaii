@@ -2,6 +2,9 @@ name: 📦 Publish npx card
 
 # Publishes card/ to npm as "phimaii" whenever its version in card/package.json
 # is one that isn't on npm yet. To release: bump the version and push.
+#
+# Auth uses npm Trusted Publishing (OIDC): no token or secret needed. npm trusts
+# this exact workflow file in PhiMaii/PhiMaii, configured in the package settings on npmjs.com.
 
 on:
   push:
@@ -12,7 +15,7 @@ on:
 
 permissions:
   contents: read
-  id-token: write # for npm provenance (shows "Built and signed on GitHub Actions" on npm)
+  id-token: write # lets npm verify this workflow (Trusted Publishing + provenance)
 
 concurrency:
   group: publish-card
@@ -33,6 +36,9 @@ jobs:
           node-version: 22
           registry-url: https://registry.npmjs.org
 
+      - name: Update npm (Trusted Publishing needs npm 11.5.1+)
+        run: npm install -g npm@latest
+
       - name: Smoke test the card
         run: FORCE_COLOR=1 COLUMNS=80 node index.js
 
@@ -51,9 +57,7 @@ jobs:
 
       - name: Publish to npm
         if: steps.check.outputs.publish == 'true'
-        run: npm publish --provenance --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm publish --access public
 
       - name: Summary
         if: steps.check.outputs.publish == 'true'
