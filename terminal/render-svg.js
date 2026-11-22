@@ -105,6 +105,14 @@ function buildInfo(gh) {
 }
 
 // ------------------------------------------------------------ render
+//
+// The whole run loops forever (like the snake on the profile), because an SVG that plays only
+// once is often already finished when people see it: browsers reuse the cached image and its
+// animation clock on reload, and on phones the README starts far below the fold.
+//
+// Every animated element gets its own @keyframes spanning the full loop, so all of them restart
+// together at the start of each cycle.
+
 function render(info) {
   const FS = 13;            // font size
   const CW = FS * 0.6;      // monospace cell width
@@ -121,52 +129,89 @@ function render(info) {
   const H = Math.ceil(endY + LH + 16);
   const baseline = (top) => r2(top + LH * 0.78);
 
-  // timeline (seconds)
-  const T_TYPE = 0.6, CMD = 'npx phimaii', T_CHAR = 0.09;
+  // ---- timeline of one loop (seconds)
+  const CMD = 'npx phimaii', T_CHAR = 0.09;
+  const T_TYPE = 0.6;
   const T_TYPED = T_TYPE + CMD.length * T_CHAR;
-  const T_SPIN = T_TYPED + 0.3, SPIN_MS = 0.9;
-  const T_CARD = T_SPIN + SPIN_MS;
+  const T_SPIN = T_TYPED + 0.3, SPIN = 0.9;
+  const T_CARD = T_SPIN + SPIN;
   const SCAN = 0.65, TYPE_START = 0.12, STAGGER = 0.04, TYPE_DUR = 0.26;
   const T_SHIMMER = T_CARD + 1.15, SHIMMER = 1.1;
-  const T_END = T_SHIMMER + SHIMMER;
+  const T_END = T_SHIMMER + SHIMMER;            // card done, new prompt
+  const HOLD = 8;                               // time to read the card
+  const CLEAR = 'clear';
+  const T_CLEAR_TYPE = T_END + HOLD;
+  const T_CLEAR = T_CLEAR_TYPE + CLEAR.length * T_CHAR + 0.35; // "Enter": screen empties
+  const LOOP = r2(T_CLEAR + 0.01);                              // ...and the next run starts
 
   const css = [];
   const body = [];
   const defs = [];
+  let kfId = 0;
 
-  // window chrome
+  // Build a looping animation from (time, css) stops. `tf` is the timing function used from
+  // that stop to the next one (default: hold the value, i.e. a hard cut).
+  const pct = (t) => `${Math.min(100, Math.max(0, (t / LOOP) * 100)).toFixed(3)}%`;
+  function loop(stops) {
+    const name = `k${kfId++}`;
+    const frames = stops
+      .sort((x, y) => x[0] - y[0])
+      .map(([t, decl, tf = 'steps(1,end)']) => `${pct(t)}{${decl};animation-timing-function:${tf}}`)
+      .join('');
+    css.push(`@keyframes ${name}{${frames}}`);
+    return `animation:${name} ${LOOP}s infinite`;
+  }
+  // translateX stops for typing `n` characters of width `step` starting at `t`
+  const typing = (t, n, dt, step, prop = (x) => `transform:translateX(${r2(x)}px)`) =>
+    Array.from({ length: n + 1 }, (_, k) => [t + k * dt, prop(k * step)]);
+
+  // ---- window chrome
   body.push(`<rect x="0.5" y="0.5" width="${W - 1}" height="${H - 1}" rx="10" fill="${P.bg}" stroke="${P.border}"/>`);
   body.push(`<path d="M10.5 0.5h${W - 21}a10 10 0 0 1 10 10v${BAR - 10.5}h-${W - 1}v-${BAR - 10.5}a10 10 0 0 1 10-10z" fill="${P.bar}"/>`);
   body.push(`<line x1="0.5" y1="${BAR}" x2="${W - 0.5}" y2="${BAR}" stroke="${P.border}"/>`);
   ['#ff5f57', '#febc2e', '#28c840'].forEach((c, i) => body.push(`<circle cx="${18 + i * 20}" cy="${BAR / 2}" r="6" fill="${c}"/>`));
   body.push(`<text x="${W / 2}" y="${BAR / 2 + 4}" text-anchor="middle" class="t" font-size="12" fill="${hex(P.dim)}">phimaii — zsh</text>`);
 
-  // prompt + typed command
-  const promptW = 4 * CW; // "➜ ~ "
-  const cmdX = PAD + promptW;
+  // ---- line 1: prompt, typed command, cursor
+  const cmdX = PAD + 4 * CW; // after "➜ ~ "
+  const prompt = (y) => `<text x="${PAD}" y="${y}" class="t"><tspan fill="${hex(P.green)}">➜</tspan> <tspan fill="${hex(P.blue)}">~</tspan></text>`;
   const yb = baseline(y0);
-  body.push(`<text x="${PAD}" y="${yb}" class="t"><tspan fill="${hex(P.green)}">➜</tspan> <tspan fill="${hex(P.blue)}">~</tspan></text>`);
+  body.push(prompt(yb));
   body.push(`<text x="${cmdX}" y="${yb}" class="t" fill="${hex(P.fg)}">${CMD}</text>`);
-  // a background-coloured cover slides right, one character at a time, revealing the command
-  body.push(`<rect class="cmdcover" x="${r2(cmdX)}" y="${r2(y0)}" width="${r2(CMD.length * CW * 1.2 + 12)}" height="${r2(LH)}" fill="${P.bg}"/>`);
-  css.push(`.cmdcover{animation:slide ${CMD.length * T_CHAR}s steps(${CMD.length}) ${T_TYPE}s forwards;--d:${r2(CMD.length * CW * 1.2 + 12)}px}`);
-  // cursor follows the typing, then disappears when "Enter" is pressed
-  body.push(`<g class="cur1"><rect class="blink" x="${r2(cmdX)}" y="${r2(y0 + 2)}" width="${r2(CW)}" height="${r2(LH - 3)}" fill="${hex(P.fg)}"/></g>`);
-  css.push(`.cur1{animation:slide ${CMD.length * T_CHAR}s steps(${CMD.length}) ${T_TYPE}s forwards,hide 0s ${T_SPIN}s forwards;--d:${r2(CMD.length * CW)}px}`);
+  // a background-coloured cover slides right one character at a time, revealing the command;
+  // it is a bit wider than the text so slightly wider fonts never leave a letter hidden
+  const cmdCover = r2(CMD.length * CW * 1.2 + 12);
+  body.push(`<rect x="${r2(cmdX)}" y="${r2(y0)}" width="${cmdCover}" height="${r2(LH)}" fill="${P.bg}" style="transform:translateX(${cmdCover}px);${loop([
+    [0, 'transform:translateX(0px)'],
+    ...typing(T_TYPE, CMD.length, T_CHAR, CW).slice(1, -1),
+    [T_TYPED, `transform:translateX(${cmdCover}px)`],
+    [T_CLEAR, 'transform:translateX(0px)'],
+  ])}"/>`);
+  // cursor: follows the typing, disappears on "Enter", comes back after `clear`
+  const cursor = (x, top) => `<rect class="blink" x="${r2(x)}" y="${r2(top + 2)}" width="${r2(CW)}" height="${r2(LH - 3)}" fill="${hex(P.fg)}"/>`;
+  body.push(`<g style="opacity:0;${loop([
+    [0, 'opacity:1;transform:translateX(0px)'],
+    ...typing(T_TYPE, CMD.length, T_CHAR, CW, (x) => `opacity:1;transform:translateX(${r2(x)}px)`).slice(1),
+    [T_SPIN, 'opacity:0'],
+    [T_CLEAR, 'opacity:1;transform:translateX(0px)'],
+  ])}">${cursor(cmdX, y0)}</g>`);
 
-  // spinner line (where the card will appear)
+  // ---- spinner (on the line where the card will appear)
   const spinY = baseline(cardTop);
   const frames = '⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏';
   const spinStep = 0.08;
-  const spinN = Math.round(SPIN_MS / spinStep);
+  const spinN = Math.round(SPIN / spinStep);
   for (let k = 0; k < spinN; k++) {
-    body.push(`<text x="${PAD}" y="${spinY}" class="t sp" style="animation-delay:${r2(T_SPIN + k * spinStep)}s" fill="${hex(P.dim)}">${frames[k % frames.length]}</text>`);
+    const t = T_SPIN + k * spinStep;
+    body.push(`<text x="${PAD}" y="${spinY}" class="t" fill="${hex(P.dim)}" style="opacity:0;${loop([
+      [0, 'opacity:0'], [t, 'opacity:1'], [t + spinStep, 'opacity:0'],
+    ])}">${frames[k % frames.length]}</text>`);
   }
-  body.push(`<text x="${r2(PAD + 2 * CW)}" y="${spinY}" class="t spl" fill="${hex(P.dim)}">fetching phimaii@latest</text>`);
-  css.push(`.sp{opacity:0;animation:flash ${spinStep}s steps(1) forwards}`);
-  css.push(`.spl{opacity:0;animation:show 0s ${T_SPIN}s forwards,hide 0s ${T_CARD}s forwards}`);
+  body.push(`<text x="${r2(PAD + 2 * CW)}" y="${spinY}" class="t" fill="${hex(P.dim)}" style="opacity:0;${loop([
+    [0, 'opacity:0'], [T_SPIN, 'opacity:1'], [T_CARD, 'opacity:0'],
+  ])}">fetching phimaii@latest</text>`);
 
-  // portrait: braille decoded into dots, one path per row
+  // ---- portrait: braille decoded into dots, one path per row, revealed by a scan line
   const BITS = [[0, 0], [0, 1], [0, 2], [1, 0], [1, 1], [1, 2], [0, 3], [1, 3]];
   const R = r2(Math.min(CW / 2, LH / 4) * 0.36);
   const maskUses = [];
@@ -184,27 +229,33 @@ function render(info) {
     });
     if (!d) return;
     defs.push(`<path id="a${i}" d="${d}"/>`);
-    const delay = r2(T_CARD + (i / (ART.length + 1)) * SCAN);
-    body.push(`<use href="#a${i}" class="ar" style="--c:${hex(rowColor(i))};animation-delay:${delay}s" fill="${hex(rowColor(i))}"/>`);
+    const c = hex(rowColor(i));
+    const t = T_CARD + (i / (ART.length + 1)) * SCAN;
+    body.push(`<use href="#a${i}" fill="${c}" style="${loop([
+      [0, 'opacity:0'],
+      [t, `opacity:1;fill:#fff`, 'ease-out'],
+      [t + 0.3, `opacity:1;fill:${c}`],
+      [T_CLEAR, 'opacity:0'],
+    ])}"/>`);
     maskUses.push(`<use href="#a${i}" fill="#fff"/>`);
   });
-  css.push(`.ar{opacity:0;animation:scan .3s ease-out forwards}`);
-  css.push(`@keyframes scan{0%{opacity:1;fill:#fff}100%{opacity:1;fill:var(--c)}}`);
 
-  // shimmer: a soft diagonal band of light, masked to the dots
+  // ---- shimmer: a soft diagonal band of light, masked to the dots
   const artW = ART_COLS * CW;
   const artH = ART.length * LH;
   defs.push(`<linearGradient id="band" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".5" stop-color="#fff" stop-opacity=".85"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>`);
   defs.push(`<mask id="dots" maskUnits="userSpaceOnUse">${maskUses.join('')}</mask>`);
-  body.push(`<g mask="url(#dots)"><rect class="shim" x="${r2(PAD - 120)}" y="${r2(cardTop - artH)}" width="90" height="${r2(artH * 3)}" fill="url(#band)" transform-origin="${r2(PAD)} ${r2(cardTop + artH / 2)}"/></g>`);
-  css.push(`.shim{opacity:0;transform:rotate(-30deg) translateX(0);animation:shim ${SHIMMER}s ease-in-out ${T_SHIMMER}s forwards}`);
-  css.push(`@keyframes shim{0%{opacity:1;transform:rotate(-30deg) translateX(0)}100%{opacity:1;transform:rotate(-30deg) translateX(${r2(artW + 260)}px)}}`);
+  const rot = 'rotate(-30deg)';
+  body.push(`<g mask="url(#dots)"><rect x="${r2(PAD - 120)}" y="${r2(cardTop - artH)}" width="90" height="${r2(artH * 3)}" fill="url(#band)" transform-origin="${r2(PAD)} ${r2(cardTop + artH / 2)}" style="opacity:0;${loop([
+    [0, `opacity:0;transform:${rot} translateX(0px)`],
+    [T_SHIMMER, `opacity:1;transform:${rot} translateX(0px)`, 'ease-in-out'],
+    [T_SHIMMER + SHIMMER, `opacity:0;transform:${rot} translateX(${r2(artW + 260)}px)`],
+  ])}"/></g>`);
 
-  // info lines, each typed out by a sliding cover
+  // ---- info lines, each typed out by a sliding cover
   const swatches = [P.blue, P.lilac, P.pink, P.orange, P.yellow, P.green, P.cyan, P.fg];
   info.forEach((line, j) => {
     const top = cardTop + j * LH;
-    const start = r2(T_CARD + TYPE_START + j * STAGGER);
     let len;
     if (line === 'swatches' || line === 'swatches-light') {
       swatches.forEach((c, k) => {
@@ -214,30 +265,42 @@ function render(info) {
       len = 24;
     } else {
       if (!line.length) return;
-      const spans = line.map((s) => `<tspan fill="${hex(s.color)}"${s.bold ? ' font-weight="700"' : ''}>${esc(s.text)}</tspan>`).join('');
+      const spans = line.map((sg) => `<tspan fill="${hex(sg.color)}"${sg.bold ? ' font-weight="700"' : ''}>${esc(sg.text)}</tspan>`).join('');
       body.push(`<text x="${r2(INFO_X)}" y="${baseline(top)}" class="t">${spans}</text>`);
-      len = line.reduce((n, s) => n + [...s.text].length, 0);
+      len = line.reduce((n, sg) => n + [...sg.text].length, 0);
     }
-    // cover is a bit wider than the text and slides fully past it, so fonts that are
-    // slightly wider than 0.6em never leave the last characters hidden
     const coverW = r2(len * CW * 1.2 + 12);
-    body.push(`<rect class="ic" style="--d:${coverW}px;animation-timing-function:steps(${len});animation-delay:${start}s" x="${r2(INFO_X - 1)}" y="${r2(top)}" width="${coverW}" height="${r2(LH + 0.5)}" fill="${P.bg}"/>`);
+    const start = T_CARD + TYPE_START + j * STAGGER;
+    body.push(`<rect x="${r2(INFO_X - 2)}" y="${r2(top - 1)}" width="${coverW}" height="${r2(LH + 2)}" fill="${P.bg}" style="transform:translateX(${coverW}px);${loop([
+      [0, 'transform:translateX(0px)'],
+      [start, 'transform:translateX(0px)', `steps(${len},end)`],
+      [start + TYPE_DUR, `transform:translateX(${coverW}px)`],
+      [T_CLEAR, 'transform:translateX(0px)'],
+    ])}"/>`);
   });
-  css.push(`.ic{animation-name:slide;animation-duration:${TYPE_DUR}s;animation-fill-mode:forwards}`);
 
-  // final prompt with a blinking cursor
+  // ---- last line: new prompt, then `clear` types itself and the loop restarts
   const eb = baseline(endY);
-  body.push(`<g class="end"><text x="${PAD}" y="${eb}" class="t"><tspan fill="${hex(P.green)}">➜</tspan> <tspan fill="${hex(P.blue)}">~</tspan></text><rect class="blink" x="${r2(cmdX)}" y="${r2(endY + 2)}" width="${r2(CW)}" height="${r2(LH - 3)}" fill="${hex(P.fg)}"/></g>`);
-  css.push(`.end{opacity:0;animation:show 0s ${r2(T_END)}s forwards}`);
+  const clearCover = r2(CLEAR.length * CW * 1.2 + 12);
+  body.push(`<g style="${loop([[0, 'opacity:0'], [T_END, 'opacity:1'], [T_CLEAR, 'opacity:0']])}">
+${prompt(eb)}
+<text x="${cmdX}" y="${eb}" class="t" fill="${hex(P.fg)}">${CLEAR}</text>
+<rect x="${r2(cmdX)}" y="${r2(endY)}" width="${clearCover}" height="${r2(LH)}" fill="${P.bg}" style="${loop([
+    [0, 'transform:translateX(0px)'],
+    ...typing(T_CLEAR_TYPE, CLEAR.length, T_CHAR, CW).slice(1, -1),
+    [T_CLEAR_TYPE + CLEAR.length * T_CHAR, `transform:translateX(${clearCover}px)`],
+  ])}"/>
+<g style="${loop([
+    [0, 'transform:translateX(0px)'],
+    ...typing(T_CLEAR_TYPE, CLEAR.length, T_CHAR, CW).slice(1),
+  ])}">${cursor(cmdX, endY)}</g>
+</g>`);
 
   css.push(`.blink{animation:blink 1.1s steps(1) infinite}`);
   css.push(`@keyframes blink{50%{opacity:0}}`);
-  css.push(`@keyframes slide{to{transform:translateX(var(--d))}}`);
-  css.push(`@keyframes show{to{opacity:1}}`);
-  css.push(`@keyframes hide{to{opacity:0}}`);
-  css.push(`@keyframes flash{0%{opacity:1}100%{opacity:0}}`);
   css.push(`.t{font-family:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;font-size:${FS}px;white-space:pre}`);
-  css.push(`@media (prefers-reduced-motion:reduce){*{animation-duration:0s!important;animation-delay:0s!important}.blink{animation:none!important}}`);
+  // reduced motion: no animation; every element's inline base style is the finished card
+  css.push(`@media (prefers-reduced-motion:reduce){*{animation:none!important}}`);
 
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" role="img" aria-label="Terminal running npx phimaii: PhiMaii's card">
 <title>npx phimaii</title>
