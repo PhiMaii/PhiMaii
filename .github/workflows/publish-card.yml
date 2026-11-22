@@ -1,0 +1,60 @@
+name: 📦 Publish npx card
+
+# Publishes card/ to npm as "phimaii" whenever its version in card/package.json
+# is one that isn't on npm yet. To release: bump the version and push.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "card/**"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write # for npm provenance (shows "Built and signed on GitHub Actions" on npm)
+
+concurrency:
+  group: publish-card
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    defaults:
+      run:
+        working-directory: card
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: https://registry.npmjs.org
+
+      - name: Smoke test the card
+        run: FORCE_COLOR=1 COLUMNS=80 node index.js
+
+      - name: Check if this version is already on npm
+        id: check
+        run: |
+          NAME=$(node -p "require('./package.json').name")
+          VERSION=$(node -p "require('./package.json').version")
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          if npm view "$NAME@$VERSION" version >/dev/null 2>&1; then
+            echo "$NAME@$VERSION is already published, skipping."
+            echo "publish=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "publish=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Publish to npm
+        if: steps.check.outputs.publish == 'true'
+        run: npm publish --provenance --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Summary
+        if: steps.check.outputs.publish == 'true'
+        run: echo "Published phimaii@${{ steps.check.outputs.version }} 🎉 Try it with \`npx phimaii\`" >> "$GITHUB_STEP_SUMMARY"

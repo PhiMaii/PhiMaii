@@ -1,0 +1,21 @@
+// ASCII portrait generated from my GitHub avatar (background removed).
+module.exports = [
+  "           lc;;;;;;ck",
+  "         Olodxkkkkxo;;",
+  "        ;okO0KXXXXXK0cl",
+  "       ockO0KXXXNNNXKkl",
+  "        lxdddkXWNkkkkxx",
+  "        cloolkldxxdxolx",
+  "       dlodOK0lKk0X0xkx",
+  "       kcod0KdoOxOOK0dk",
+  "        xlkWxoxkxdxN0d",
+  "         ooK0O0KXKXKl",
+  "         xc;okOO0dcld",
+  "         oloccoollk0Wc;",
+  "     lc,;NxxdkOOKNWMx'';l",
+  "l;,'..'.xNMNOkNWNWMd'::;'..,co",
+  "..'..''lkxk0Kk0Ox0x':,''.'.....'",
+  ",,'..,'kKkKO0K0O0x,:,,,'.''...''",
+  ",,...:,oWNNWMMWM0,;:::'.'',''',:",
+  ",:..',,;WWWMMMNW;:;::'.,::,,,;:;",
+];

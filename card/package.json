@@ -1,0 +1,28 @@
+{
+  "name": "phimaii",
+  "version": "1.0.0",
+  "description": "PhiMaii's neofetch-style terminal card. Run: npx phimaii",
+  "bin": {
+    "phimaii": "index.js"
+  },
+  "files": [
+    "index.js",
+    "art.js"
+  ],
+  "keywords": [
+    "card",
+    "business-card",
+    "npx",
+    "neofetch"
+  ],
+  "author": "PhiMaii",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PhiMaii/PhiMaii.git",
+    "directory": "card"
+  },
+  "engines": {
+    "node": ">=14"
+  }
+}
