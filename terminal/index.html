@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>phimaii-terminal demo</title>
+  <style>
+    body { margin: 0; background: #0f1117; color: #c0caf5; font: 16px/1.6 system-ui, sans-serif; }
+    main { max-width: 820px; margin: 0 auto; padding: 0 20px; }
+    .spacer { min-height: 90vh; display: grid; place-items: center; text-align: center; }
+    .spacer p { color: #565f89; }
+    section { padding: 40px 0 120px; }
+    h2 { font-weight: 600; }
+  </style>
+  <script src="phimaii-terminal.js" defer></script>
+</head>
+<body>
+  <main>
+    <div class="spacer">
+      <div>
+        <h1>phimaii-terminal</h1>
+        <p>Scroll down ↓ — the terminal runs <code>npx phimaii</code> when it comes into view.</p>
+      </div>
+    </div>
+
+    <section>
+      <h2>Say hi from the terminal</h2>
+      <phimaii-terminal></phimaii-terminal>
+    </section>
+  </main>
+</body>
+</html>
